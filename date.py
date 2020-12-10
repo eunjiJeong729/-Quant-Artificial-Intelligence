@@ -12,3 +12,4 @@ print(type(date_str))
   # 형식 변환
 date_str2 = date_dt.strftime('%Y-%m-%d %H')
 print(date_str2)
+
