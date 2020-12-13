@@ -12,3 +12,12 @@ FnGuide에서 금융 도메인을 시작하며 데이터 분석을 접목한 실
 datetime 날짜 변환 적용 실습<br>
 pandas 활용 실습 적용<br>
 (pandas freq에 'B' 모드 영업일, 'BMS' 마지막 영업일, 'BM' 첫 영업일 추출 가능. 현업에 참조)🌱
+<br><br>
+📌12.11<br>
+pandas 활용 금융데이터 load, 전처리<br>
+데이터 : SPYG ETF 사용(출처 : https://finance.yahoo.com/quote/SPY/history?p=SPY)🌱
+<br><br>
+📌12.12<br>
+pandas 금융 분석 함수 활용<br>
+shift, pct_change, diff, resample등🌱
+
