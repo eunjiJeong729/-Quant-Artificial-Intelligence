@@ -20,4 +20,7 @@ pandas 활용 금융데이터 load, 전처리<br>
 📌12.12<br>
 pandas 금융 분석 함수 활용<br>
 shift, pct_change, diff, resample등🌱
-
+<br><br>
+📌12.16<br>
+금융 정보 API 사용<br>
+FinanceDataReader 통한 주가, 종목, 환율 정보 load🌱
