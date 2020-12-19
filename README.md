@@ -24,3 +24,7 @@ shift, pct_change, diff, resample등🌱
 📌12.16<br>
 금융 정보 API 사용<br>
 FinanceDataReader 통한 주가, 종목, 환율 정보 load🌱
+<br><br>
+📌12.19<br>
+실제 DB Engineering을 적용해보기 위한 Maria DB 구축<br>
+FnGuide 데이터 일부분을 활용하여 분석에 사용해볼 것(상업 용도가 아닌 연구 목적만으로 사용함)🌱
