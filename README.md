@@ -28,3 +28,7 @@ FinanceDataReader 통한 주가, 종목, 환율 정보 load🌱
 📌12.19<br>
 실제 DB Engineering을 적용해보기 위한 Maria DB 구축<br>
 FnGuide 데이터 일부분을 활용하여 분석에 사용해볼 것(상업 용도가 아닌 연구 목적만으로 사용함)🌱
+<br><br>
+📌12.27<br>
+FnGuide에서 주가 예측 모델 생성을 위한 데이터 베이스 구축과 더불어,<br>
+볼린저 밴드 퀀트 전략을 위한 볼린저 밴드 내용 실습🌱
