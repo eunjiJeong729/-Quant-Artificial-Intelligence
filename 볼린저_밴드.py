@@ -3,6 +3,8 @@
 '''
 
 import pandas as pd
+import matplotlib.pylab as plt
+
 # S&P 500을 추종하는 ETF
 df = pd.read_csv('SPY.csv')
 print(df.head())
@@ -13,11 +15,11 @@ print(price_df.head())
 
 # 중심선 만들기 rolling은 이동평균만드는 함수(20일)
 price_df['center'] = price_df['Adj Close'].rolling(window=20).mean()
-print(price_df.iloc[13:25])
+print(price_df.iloc[:])
 price_df['ub'] = price_df['center'] + 2 * price_df['Adj Close'].rolling(window=20).std()
-print(price_df.iloc[13:25])
+print(price_df.iloc[:])
 price_df['lb'] = price_df['center'] - 2 * price_df['Adj Close'].rolling(window=20).std()
-print(price_df.iloc[13:25])
+print(price_df.iloc[:])
 
 n = 20
 sigma = 2
@@ -32,7 +34,7 @@ def bollinger_band(price_df, n, sigma) :
 
 # 볼린저 밴드를 사용한 전략 성과 확인
 bollinger = bollinger_band(price_df, n, sigma)
-base_data = '2020-01-01'
+base_data = '2019-12-01'
 sample = bollinger.loc[base_data:]
 print(sample.head())
 
@@ -54,7 +56,7 @@ def tradings(sample,book):
                 book.loc[i, 'trade'] = 'buy' # 유지
             else :
                 book.loc[i, 'trade'] = 'buy'  # 매수
-        elif sample.loc[i, 'ub'] > sample.loc[i, 'Adj Close'] and sample.loc[i, 'Adj Close'] >= sample.loc[i,'lb']: # 볼린저 밴드 안에 있으면
+        elif sample.loc[i, 'ub'] >= sample.loc[i, 'Adj Close'] and sample.loc[i, 'Adj Close'] >= sample.loc[i,'lb']: # 볼린저 밴드 안에 있으면
             if book.shift(1).loc[i, 'trade'] == 'buy': # 이미 매수이면
                 book.loc[i, 'trade'] = 'buy' # 유지
             else :
@@ -96,3 +98,7 @@ def rate_returns(book) :
     return round(acc_rtn, 4)
 
 print(rate_returns(book))
+
+# 변화추이
+book['acc return'].plot()
+plt.show()
