@@ -32,3 +32,17 @@ last_date = tmp_df.index[-1]
 print('누적 수익 : ',tmp_df.loc[last_date,'st_rtn'])
 tmp_df.plot(figsize=(16,9))
 plt.show()
+
+print(price_df.tail(10))
+# 투자성과 분석 지표
+CAGR = price_df.loc['2020-12-11', 'st_rtn']**(252./len(price_df.index)) -1 # 연평균 복리수익률
+
+historical_max = price_df['Adj Close'].cummax() # 최대 낙폭
+daily_drawdown = price_df['Adj Close'] / historical_max - 1.0
+historical_dd = daily_drawdown.cummin()
+historical_dd.plot()
+plt.show()
+
+VOL = np.std(price_df['daily_rtn']) * np.sqrt(252.) # 변동성
+
+sharpe = np.mean(price_df['daily_rtn']) / np.std(price_df['daily_rtn']) * np.sqrt(252.)
