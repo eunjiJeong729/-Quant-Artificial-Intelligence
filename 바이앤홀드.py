@@ -45,4 +45,12 @@ plt.show()
 
 VOL = np.std(price_df['daily_rtn']) * np.sqrt(252.) # 변동성
 
-sharpe = np.mean(price_df['daily_rtn']) / np.std(price_df['daily_rtn']) * np.sqrt(252.)
+sharpe = np.mean(price_df['daily_rtn']) / np.std(price_df['daily_rtn']) * np.sqrt(252.) # 샤프지수
+
+MDD = historical_dd.min()
+
+# 분석 결과
+print('CAGR : ',round(CAGR*100,2), '%')
+print('Sharpe : ',round(sharpe,2))
+print('VOL : ',round(VOL*100,2), '%')
+print('MDD : ',round(-1*MDD*100,2), '%')
