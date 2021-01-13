@@ -32,3 +32,10 @@ book = price_df.copy()
 book.set_index(['Date'],inplace=True)
 book['trade'] = ''
 book.head()
+
+# 거래 실행
+ticker = 'SPY' # trading
+for x in month_last_df.index:
+    signal = ''
+    # 절대 모멘텀 계산
+    momentum_index = month_last_df.loc[x, 'BF_1M_Adj Close'] / month_last_df.loc[x, 'BF_2M Adj Close'] -1
