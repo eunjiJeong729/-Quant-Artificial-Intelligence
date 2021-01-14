@@ -23,7 +23,7 @@ print(month_last_df.head())
 
 # 데이터 가공
 month_last_df['BF_1M_Adj Close'] = month_last_df.shift(1)['Adj Close']
-month_last_df['BF_2M_Adj Close'] = month_last_df.shift(12)['Adj Close']
+month_last_df['BF_12M_Adj Close'] = month_last_df.shift(12)['Adj Close']
 month_last_df.fillna(0, inplace=True)
 print(month_last_df.head(10))
 
@@ -38,4 +38,10 @@ ticker = 'SPY' # trading
 for x in month_last_df.index:
     signal = ''
     # 절대 모멘텀 계산
-    momentum_index = month_last_df.loc[x, 'BF_1M_Adj Close'] / month_last_df.loc[x, 'BF_2M Adj Close'] -1
+    momentum_index = month_last_df.loc[x, 'BF_1M_Adj Close'] / month_last_df.loc[x, 'BF_12M_Adj Close'] -1
+    # 절대 모멘텀 지표 True / False 판단
+    flag = True if ((momentum_index > 0.0) and (momentum_index != np.inf) and (momentum_index != -np.inf)) else False
+    if flag :
+        signal = 'buy' + ticker # 절대 모멘텀 지표가 Positive이면 매수 후 보유
+    print('날짜 : ',x,' 모멘텀 인덱스 : ',momentum_index, 'flag : ',flag,'signal : ',signal)
+    book.loc[x:, 'trade'] = signal
