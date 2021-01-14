@@ -45,3 +45,16 @@ for x in month_last_df.index:
         signal = 'buy' + ticker # 절대 모멘텀 지표가 Positive이면 매수 후 보유
     print('날짜 : ',x,' 모멘텀 인덱스 : ',momentum_index, 'flag : ',flag,'signal : ',signal)
     book.loc[x:, 'trade'] = signal
+
+# 전략수익률
+def returns(book, ticker):
+    # 손익 계산
+    rtn = 1.0
+    book['return'] = 1
+    buy = 0.0
+    sell = 0.0
+    for i in book.index:
+        if book.loc[i, 'trade'] == 'buy ' + ticker and book.shift(1).loc[i, 'trade'] == '' :
+            # long 진입
+            buy = book.loc[i, 'Adj Close']
+            print('진입일 : ',i, 'long 진입가격 : ',buy)
