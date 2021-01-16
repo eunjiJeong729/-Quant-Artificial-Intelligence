@@ -58,3 +58,14 @@ def returns(book, ticker):
             # long 진입
             buy = book.loc[i, 'Adj Close']
             print('진입일 : ',i, 'long 진입가격 : ',buy)
+        elif book.loc[i, 'trade'] == 'buy ' + ticker and book.shift(1).loc[i, 'trade'] == 'buy ' + ticker :
+            # 보유중
+            current = book.loc[i, 'Adj Close']
+            rtn = (current - buy) / buy + 1
+            book.loc[i, 'return'] = rtn
+        elif book.loc[i, 'trade'] == '' and book.shift(1).loc[i, 'trade'] == 'buy ' + ticker:
+            # long 청산
+            sell = book.loc[i, 'Adj Close']
+            rtn = (sell - buy) / buy + 1 # 손익계산
+            book.loc[i, 'return'] = rtn
+            print('청산일 : ',i, 'long 진입가격 : ', buy, ' | long 청산가격 : ', sell, ' | return:', round(rtn, 4))
