@@ -69,3 +69,19 @@ def returns(book, ticker):
             rtn = (sell - buy) / buy + 1 # 손익계산
             book.loc[i, 'return'] = rtn
             print('청산일 : ',i, 'long 진입가격 : ', buy, ' | long 청산가격 : ', sell, ' | return:', round(rtn, 4))
+        if book.loc[i, 'trade'] == '': # 제로포지션
+            buy = 0.0
+            sell = 0.0
+            current = 0.0
+    acc_rtn = 1.0
+    for i in book.index:
+        if book.loc[i, 'trade'] == '' and book.shift(1).loc[i, 'trade'] == 'buy ' + ticker:
+            # long 청산 시
+            rtn = book.loc[i, 'return']
+            acc_rtn = acc_rtn * rtn # 누적수익률
+            book.loc[i:, 'acc return'] = acc_rtn
+
+    print('Accunulated return :', round(acc_rtn, 4))
+    return (round(acc_rtn, 4))
+
+print(returns(book,ticker))
