@@ -35,3 +35,10 @@ for file in files :
         read_df = pd.read_csv(file)
         # 데이터 가공
         price_df, ym_keys = data_preprocessing(read_df,head,base_date='2019-12-12')
+        # 가공한 데이터 붙이기
+        stock_df = stock_df.append(price_df.loc[:,['Date','CODE','Adj Close']],sort=False)
+        # 월별 상대 모멘텀 계산을 위한 1개월간 수익률 계산
+        for ym in ym_keys:
+            m_ret = price_df.loc[price_df[price_df['STD_YM'] == ym].index[-1], 'Adj Close'] / price_df.loc[price_df[price_df['STD_YM'] == ym].index[0], 'Adj Close']
+            price_df.loc[price_df['STD_YM'] == ym, ['1M_RET']] = m_ret
+            month_last_df = month_last_df.append(price_df.loc[price_df[price_df['STD_YM'] == ym].index[-1], ['Date','CODE','1M_RET']])
