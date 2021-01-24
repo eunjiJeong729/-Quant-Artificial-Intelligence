@@ -42,3 +42,14 @@ for file in files :
             m_ret = price_df.loc[price_df[price_df['STD_YM'] == ym].index[-1], 'Adj Close'] / price_df.loc[price_df[price_df['STD_YM'] == ym].index[0], 'Adj Close']
             price_df.loc[price_df['STD_YM'] == ym, ['1M_RET']] = m_ret
             month_last_df = month_last_df.append(price_df.loc[price_df[price_df['STD_YM'] == ym].index[-1], ['Date','CODE','1M_RET']])
+
+# 상대 모멘텀 수익률로 필터링
+month_ret_df = month_last_df.pivot('Date', 'CODE', '1M_RET').copy()
+month_ret_df = month_ret_df.rank(axis=1, ascending=False, method="max", pct=True)
+# 투자종목 선택할 rank, 상위 40% 종목만 신호 목록
+month_ret_df = month_ret_df.where( month_ret_df < 0.4, np.nan)
+month_ret_df.fillna(0,inplace=True)
+month_ret_df[month_ret_df != 0] = 1
+stock_codes = list(stock_df['CODE'].unique())
+
+print(month_ret_df)
