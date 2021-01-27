@@ -53,3 +53,9 @@ month_ret_df[month_ret_df != 0] = 1
 stock_codes = list(stock_df['CODE'].unique())
 
 print(month_ret_df)
+
+# 신호 목록으로 트레이딩 + 포지셔닝
+sig_dict = dict()
+for date in month_ret_df.index:
+    ticker_list = list(month_ret_df.loc[date,month_ret_df.loc[date,:] >= 1.0].index)
+    sig_dict[date] = ticker_list
