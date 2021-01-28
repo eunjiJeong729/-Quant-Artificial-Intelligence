@@ -69,3 +69,8 @@ for date in month_ret_df.index:
     ticker_list = list(month_ret_df.loc[date,month_ret_df.loc[date,:] >= 1.0].index)
     sig_dict[date] = ticker_list
 stock_c_matrix = stock_df.pivot('Date','CODE','Adj Close').copy()
+book = create_trade_book(stock_c_matrix, list(stock_df['CODE'].unique()))
+
+for date,values in sig_dict.items():
+    for stock in values:
+        book.loc[date,'p '+stock] = 'ready ' + stock
