@@ -22,6 +22,15 @@ def data_preprocessing(samlpe, ticker, base_date):
     ym_keys = list(samlpe['STD_YM'].unique()) # 중복 제거한 기준년월 목록
     return samlpe, ym_keys
 
+def create_trade_book(sample, sample_codes):
+    book = pd.DataFrame()
+    book = sample[sample_codes].copy()
+    book['STD_YM'] = book.index.map(lambda x : datetime.datetime.strptime(x, '%Y-%m-%d').strftime('%Y-%m'))
+    for c in sample_codes:
+        book['p '+c] = ''
+        book['r '+c] = ''
+    return book
+
 for file in files :
     '''
     데이터 저장 경로에 있는 개별 종목들을 읽어옴
@@ -59,3 +68,4 @@ sig_dict = dict()
 for date in month_ret_df.index:
     ticker_list = list(month_ret_df.loc[date,month_ret_df.loc[date,:] >= 1.0].index)
     sig_dict[date] = ticker_list
+stock_c_matrix = stock_df.pivot('Date','CODE','Adj Close').copy()
