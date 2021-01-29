@@ -31,6 +31,22 @@ def create_trade_book(sample, sample_codes):
         book['r '+c] = ''
     return book
 
+def tradings(book, s_codes):
+    std_ym = ''
+    buy_phase = False
+    for s in s_codes:
+        print(s)
+        for i in book.index:
+            if book.loc[i, 'p '+s] == '' and book.shift(1).loc[i,'p '+s] == 'ready ' + s:
+                std_ym = book.loc[i, 'STD_YM']
+                buy_phase = True
+            if book.loc[i, 'p '+s] == '' and book.shift(1).loc[i,'STD_YM'] == std_ym and buy_phase == True:
+                book.loc[i,'p '+s] = 'buy ' +s
+            if book.loc[i,'p '+s] == '':
+                std_ym = None
+                buy_phase = False
+        return book
+
 for file in files :
     '''
     데이터 저장 경로에 있는 개별 종목들을 읽어옴
