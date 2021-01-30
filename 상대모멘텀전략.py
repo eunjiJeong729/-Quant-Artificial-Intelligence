@@ -46,6 +46,25 @@ def tradings(book, s_codes):
                 std_ym = None
                 buy_phase = False
         return book
+    
+def multi_returns(book, s_codes):
+    # 손익계산
+    rtn = 0.0
+    buy_dict = {}
+    num = len(s_codes)
+    sell_dict = {}
+    
+    for i in book.index:
+        for s in s_codes:
+            if book.lic[i, 'p ' + s] == 'buy ' + s and book.shift(1).loc[i, 'p '+s] == 'ready '+s and book.shift(2).loc[i, 'p '+s] == '' :
+                # long 진입
+                buy_dict[s] = book.loc[i, s]
+            elif book.lic[i, 'p ' + s] == '' and book.shift(1).loc[i, 'p '+s] == 'buy '+s: # long 청산
+                sell_dict[s] = book.loc[i, s]
+                # 손익계산
+                rtn = (sell_dict[s] / buy_dict[s]) -1
+                book.loc[i, 'r '+s] = rtn
+                print('개별 청산일 : ', i, ' 종목 코드 : ', s, 'long 진입가격 : ', buy_dict[s], ' | long 청산가격 : ', sell_dict[s], ' | return:', round(rtn * 100, 2), '%') # 수익률 계산
 
 for file in files :
     '''
@@ -90,3 +109,9 @@ book = create_trade_book(stock_c_matrix, list(stock_df['CODE'].unique()))
 for date,values in sig_dict.items():
     for stock in values:
         book.loc[date,'p '+stock] = 'ready ' + stock
+
+# 트레이딩
+book = tradings(book, stock_codes)
+
+# 수익률 계산
+multi_returns(book, stock_codes)
