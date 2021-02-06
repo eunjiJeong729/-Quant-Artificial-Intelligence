@@ -65,6 +65,22 @@ def multi_returns(book, s_codes):
                 rtn = (sell_dict[s] / buy_dict[s]) -1
                 book.loc[i, 'r '+s] = rtn
                 print('개별 청산일 : ', i, ' 종목 코드 : ', s, 'long 진입가격 : ', buy_dict[s], ' | long 청산가격 : ', sell_dict[s], ' | return:', round(rtn * 100, 2), '%') # 수익률 계산
+            if book.loc[i, 'p ',+s] == '': # 제로 포지션 || long 청산
+                buy_dict[s] = 0.0
+                sell_dict[s] = 0.0
+        acc_rtn = 1.0
+        for i in book.index:
+            rtn = 0.0
+            count = 0
+            for s in s_codes:
+                if book.loc[i, 'p '+s] == '' and book.shift(1).loc[i, 'p '+s] == 'buy '+s:
+                    count += 1
+                    rtn += book.loc[i, 'r '+s]
+            if (rtn != 0.0) & (count != 0) :
+                acc_rtn *= (rtn / count) + 1
+                print('누적 청산일 : ',i,'청산 종목수 : ', count, '청산 수익률 : ', round((rtn/count), 4),'누적 수익률 : ', round(acc_rtn, 4))
+            book.loc[i, 'acc_rtn'] = acc_rtn
+        print('누적 수익률 : ', round(acc_rtn, 4))
 
 for file in files :
     '''
